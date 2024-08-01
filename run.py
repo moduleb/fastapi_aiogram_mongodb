@@ -3,8 +3,8 @@ from fastapi import FastAPI
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
-from app.limiter import limiter
-from app.routers import tasks, login, register, logout
+from api.limiter import limiter
+from api.routers import tasks, login, register, logout
 
 # Создаем приложение
 app = FastAPI()
