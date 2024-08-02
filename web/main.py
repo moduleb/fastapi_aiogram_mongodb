@@ -2,7 +2,7 @@ import logging
 import os
 import uvicorn
 from bson import ObjectId
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel, Field
 from pymongo import MongoClient, errors
 
@@ -39,6 +39,8 @@ except Exception as e:
 class Message(BaseModel):
     id: ObjectId = Field(default=None, exclude=True, alias="_id")
     content: str
+    host: str = Field(default=None)
+    username: str = Field(default=None)
 
     # Разрешить использование произвольных типов в модели
     class Config:
@@ -58,9 +60,10 @@ def get_messages():
 
 # Создание сообщения в БД
 @app.post("/api/v1/messages/", response_model=Message)
-def create_message(message: Message):
+def create_message(message: Message, request: Request):
     try:
         message_dict = message.dict()
+        message_dict["host"] = request.client.host
         db.messages.insert_one(message_dict)
         return message_dict
     except errors.PyMongoError as e:

@@ -8,6 +8,7 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 
 API_URL = "http://web/api/v1/messages/"
+# API_URL = "http://localhost/api/v1/messages/"
 
 class State_(StatesGroup):
     wait_for_message = State()
@@ -46,7 +47,8 @@ async def create_message(message: Message, state: FSMContext):
 @router.message(State_.wait_for_message)
 async def add(msg: Message, state: FSMContext):
     data = msg.text
-    response = requests.post(API_URL, json={"content": data})
+    response = requests.post(API_URL, json={"content": data,
+                                            "username":str(msg.from_user.username)})
     await state.clear()
     if response:
         await msg.reply("Message sent to the API.")
