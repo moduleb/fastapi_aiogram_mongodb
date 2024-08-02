@@ -1,40 +1,33 @@
-version: "3.9"
+version: '3.8'
 
 services:
-  app:
-    container_name: gooddelo_app
+  web:
     build:
-      context: .
-    image: goodwin954/gooddelo
+      context: ./web
     ports:
-      - "8000:8000"
+      - "8000:80"
     depends_on:
-      pg:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-  redis:
-    container_name: gooddelo_redis
-    image: redis:latest
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-  pg:
-    container_name: gooddelo_pg
-    image: postgres:latest
-    environment:
-      POSTGRES_USER: gooddelo
-      POSTGRES_PASSWORD: gooddelo
-      POSTGRES_DB: gooddelo
-      PGPORT: 5432
+      - mongo
+
+  nginx:
+    image: nginx:latest
     ports:
-      - "5435:5432"
+      - "80:80"
+      - "443:443"
     volumes:
-      - ./pg_data:/var/lib/postgresql/data
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U gooddelo" ]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - web
+
+  mongo:
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - ./data/mongodb:/data/db
+
+  bot:
+    build:
+      context: ./bot
+    depends_on:
+      - web

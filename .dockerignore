@@ -1,0 +1,7 @@
+data/
+.idea/
+.venv/
+.gitignore
+task.md
+README.md
+.DS_Store
