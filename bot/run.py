@@ -2,11 +2,9 @@ import asyncio
 import logging
 import os
 
-from dotenv import load_dotenv
 from aiogram import Dispatcher, types, Bot
 from aiogram.fsm.storage.memory import MemoryStorage
-
-import requests
+from dotenv import load_dotenv
 
 from handlers import router
 
@@ -21,13 +19,15 @@ else:
 
 logging.basicConfig(level=log_level)
 
+# Получаем токен из окружения
 load_dotenv()
 TOKEN = os.getenv("TOKEN")
 
+# Создаем бота
 dp = Dispatcher(storage=MemoryStorage())
 bot = Bot(token=TOKEN)
 
-
+# Устанавливаем команды
 commands = [
     types.BotCommand(command="/start", description="Начать диалог"),
     types.BotCommand(command="/messages", description="Получить все сообщения"),
@@ -39,12 +39,12 @@ async def main():
     dp.include_router(router)
     await bot.delete_webhook(drop_pending_updates=True)
     try:
-        await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types(),
+        await dp.start_polling(bot,
+                               allowed_updates=dp.resolve_used_update_types(),
                                close_bot_session=True)
-    finally:
-        pass
+    except Exception as e:
+        logging.error("Bot can't be started, error: {}".format(str(e)))
 
 
 if __name__ == '__main__':
-    logging.basicConfig(level=logging.DEBUG)
     asyncio.run(main())

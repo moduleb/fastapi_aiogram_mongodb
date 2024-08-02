@@ -1,3 +1,5 @@
+import logging
+
 import requests
 from aiogram import Router
 from aiogram.filters import Command
@@ -5,14 +7,10 @@ from aiogram.types import Message
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 
-API_URL = "http://web/api/v1/msg/"
-
-
-# API_URL = "http://127.0.0.1:8000/api/v1/msg/"
-
+API_URL = "http://web/api/v1/messages/"
 
 class State_(StatesGroup):
-    wait_for_message = State()  # Переименуйте для ясности
+    wait_for_message = State()
 
 
 router = Router()
@@ -34,7 +32,8 @@ async def get_messages(message: Message):
         messages = response.json()
         await message.reply("\n".join([f"{msg['content']}" for msg in messages]))
     else:
-        await message.reply("Сервис недоступен, попробуйте позже")
+        await message.reply("Service is not available, try again later")
+        logging.error("Нет ответа от {}".format(API_URL))
 
 
 # Создание сообщения
@@ -48,12 +47,12 @@ async def create_message(message: Message, state: FSMContext):
 async def add(msg: Message, state: FSMContext):
     data = msg.text
     response = requests.post(API_URL, json={"content": data})
+    await state.clear()
     if response:
         await msg.reply("Message sent to the API.")
-        await state.clear()
     else:
-        await msg.reply("Сервис недоступен, попробуйте позже")
-        await state.clear()
+        await msg.reply("Service is not available, try again later")
+        logging.error("Нет ответа от {}".format(API_URL))
 
 
 # Ответ на любое полученное сообщение от пользователя

@@ -46,7 +46,7 @@ class Message(BaseModel):
 
 
 # Получение всех сообщений
-@app.get("/api/v1/msg/", response_model=list[Message])
+@app.get("/api/v1/messages/", response_model=list[Message])
 def get_messages():
     try:
         messages = list(db.messages.find())
@@ -57,7 +57,7 @@ def get_messages():
 
 
 # Создание сообщения в БД
-@app.post("/api/v1/msg/", response_model=Message)
+@app.post("/api/v1/messages/", response_model=Message)
 def create_message(message: Message):
     try:
         message_dict = message.dict()
