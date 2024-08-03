@@ -18,6 +18,7 @@
 
 
 ## Запуск:
+>Для запуска вам потребуется [установить Docker](https://www.docker.com/).  
 1. Клонировать проект с Github:
 ```bash
   git clone https://github.com/moduleb/fastapi_aiogram_mongodb.git
@@ -28,19 +29,19 @@
   cd fastapi_aiogram_mongodb
 ```
 
-3. Открыть файл RENAME, вписать свой токен, переименовать файл:
+3. Создать файл .env, вписать токен от телеграм бота в формате TOKEN=ваш_токен:
 ```bash
-nano RENAME
+nano .env
 ```
 
 4. Запустить приложение:
 ```bash
-docker compose up -d --build
+sudo docker compose up -d --build
 ```
 
 5. Остановить приложение:
 ```bash
-docker compose stop
+sudo docker compose stop
 ```
 -----------------------------------------------------
 ## Эндпоинты:
