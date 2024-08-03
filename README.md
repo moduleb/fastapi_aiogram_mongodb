@@ -18,17 +18,20 @@
 
 
 ## Запуск:
-1. Клонировать проект с Github.
+1. Клонировать проект с Github:
 ```bash
   git clone https://github.com/moduleb/fastapi_aiogram_mongodb.git
 ```
 
-2. Перейти в папку проекта.
+2. Перейти в папку проекта:
 ```bash
   cd fastapi_aiogram_mongodb
 ```
 
-3. Открыть файл RENAME, вписать свой токен, переименовать файл.
+3. Открыть файл RENAME, вписать свой токен, переименовать файл:
+```bash
+nano RENAME
+```
 
 4. Запустить приложение:
 ```bash
