@@ -1,7 +1,1 @@
-# Setup Instructions
 
-1. Add your Telegram bot token to the file.
-2. Rename the file to ".env".
-
-# Example content of the .env file:
-TOKEN=your_token_here
