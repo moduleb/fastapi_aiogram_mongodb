@@ -20,7 +20,7 @@ else:
 logging.basicConfig(level=log_level)
 
 # Получаем токен из окружения
-load_dotenv()
+# load_dotenv()
 TOKEN = os.getenv("TOKEN")
 
 # Создаем бота

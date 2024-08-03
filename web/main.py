@@ -25,15 +25,9 @@ else:
 logging.basicConfig(level=log_level)
 
 # Подключаемся к MongoDB
-try:
-    client = MongoClient(mongo_connection_string, serverSelectionTimeoutMS=2000)
-    client.admin.command('ping')  # Это вызовет ошибку, если MongoDB недоступна
-    db = client.messages  # Выбор базы данных "messages"
-    logging.info("MongoDB connected at {}: {}".format(client.HOST, client.PORT))
-except Exception as e:
-    logging.error("Could not connect to MongoDB:\n{}".format(e))
-    raise SystemExit("Exiting due to MongoDB connection error.")
-
+client = MongoClient(mongo_connection_string, serverSelectionTimeoutMS=2000)
+db = client.messages  # Выбор базы данных "messages"
+logging.info("MongoDB connected at {}: {}".format(client.HOST, client.PORT))
 
 # Модель данных
 class Message(BaseModel):

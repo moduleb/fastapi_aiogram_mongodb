@@ -31,3 +31,5 @@ services:
       context: ./bot
     depends_on:
       - web
+    env_file:
+      - .env

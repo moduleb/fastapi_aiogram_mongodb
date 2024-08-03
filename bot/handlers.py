@@ -8,7 +8,6 @@ from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
 
 API_URL = "http://web/api/v1/messages/"
-# API_URL = "http://localhost/api/v1/messages/"
 
 class State_(StatesGroup):
     wait_for_message = State()
@@ -16,13 +15,12 @@ class State_(StatesGroup):
 
 router = Router()
 
-
 # Приветствие
 @router.message(Command("start"))
 async def send_welcome(message: Message):
     await message.reply("Welcome!\n"
-                        "Use /messages to get messages,\n"
-                        "/create to create a message.")
+                        "You can use /messages to view messages,\n"
+                        "and /create to add a new message.")
 
 
 # Получение всех сообщений
@@ -31,16 +29,19 @@ async def get_messages(message: Message):
     response = requests.get(API_URL)
     if response:
         messages = response.json()
-        await message.reply("\n".join([f"{msg['content']}" for msg in messages]))
+        for msg in messages:
+            await message.reply(
+                "\n".join(f"{key}: {value}" for key, value in msg.items())
+            )
     else:
-        await message.reply("Service is not available, try again later")
-        logging.error("Нет ответа от {}".format(API_URL))
+        await message.reply("Service unavailable. Please try again later.")
+        logging.error("No response from {}".format(API_URL))
 
 
 # Создание сообщения
 @router.message(Command("create"))
 async def create_message(message: Message, state: FSMContext):
-    await message.reply("Please write your message.")
+    await message.reply("Please enter your message")
     await state.set_state(State_.wait_for_message)
 
 
@@ -53,8 +54,8 @@ async def add(msg: Message, state: FSMContext):
     if response:
         await msg.reply("Message sent to the API.")
     else:
-        await msg.reply("Service is not available, try again later")
-        logging.error("Нет ответа от {}".format(API_URL))
+        await msg.reply("Service unavailable. Please try again later.")
+        logging.error("No response from {}".format(API_URL))
 
 
 # Ответ на любое полученное сообщение от пользователя
