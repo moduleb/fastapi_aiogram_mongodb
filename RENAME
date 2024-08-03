@@ -1,8 +1,9 @@
-# Инструкция по настройке
+Here is the translation to English:
 
-1. Добавьте свой токен от Telegram бота в файл.
-2. Переименуйте файл в ".env".
+# Setup Instructions
 
-# Пример содержимого файла .env:
-TOKEN=ваш_токен_здесь
+1. Add your Telegram bot token to the file.
+2. Rename the file to ".env".
 
+# Example content of the .env file:
+TOKEN=your_token_here
