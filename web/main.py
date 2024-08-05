@@ -14,12 +14,12 @@ app = FastAPI()
 
 # Устанавливаем строку подключения к MongoDB и
 # уровень логирования в зависимости от окружения.
-if is_running_in_docker:
-    mongo_connection_string = "mongodb://mongo:27017/"
-    log_level = logging.INFO
-else:
-    log_level = logging.DEBUG
-    mongo_connection_string = 'mongodb://localhost:27017/'
+# if is_running_in_docker:
+#     mongo_connection_string = "mongodb://mongo:27017/"
+#     log_level = logging.INFO
+# else:
+log_level = logging.DEBUG
+mongo_connection_string = 'mongodb://localhost:27017/'
 
 # Устанавливаем уровень логирования
 logging.basicConfig(level=log_level)
