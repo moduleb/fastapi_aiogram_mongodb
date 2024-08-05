@@ -27,7 +27,7 @@ logging.basicConfig(level=log_level)
 # Подключаемся к MongoDB
 client = MongoClient(mongo_connection_string, serverSelectionTimeoutMS=2000)
 db = client.messages  # Выбор базы данных "messages"
-logging.info("MongoDB connected at {}: {}".format(client.HOST, client.PORT))
+# logging.info("MongoDB connected at {}: {}".format(client.HOST, client.PORT))
 
 # Модель данных
 class Message(BaseModel):
