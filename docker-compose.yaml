@@ -26,6 +26,8 @@ services:
       # - "27017:27017"
     volumes:
       - ./data/mongodb:/data/db
+    environment:
+      - WIRETIGER_CACHE_SIZE_GB=0.25  # азмер кэша WiredTiger в 256 МБ
 
   bot:
     build:
