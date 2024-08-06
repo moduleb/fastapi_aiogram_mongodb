@@ -3,8 +3,8 @@ services:
     build:
       context: ./web
     container_name: web
-    ports:
-      - "8000:80"
+    # ports:
+      # - "8000:80"
     depends_on:
       - mongo
 
@@ -22,8 +22,8 @@ services:
   mongo:
     image: mongo:latest
     container_name: mongo
-    ports:
-      - "27017:27017"
+    # ports:
+      # - "27017:27017"
     volumes:
       - ./data/mongodb:/data/db
 
