@@ -44,7 +44,7 @@ class Message(BaseModel):
 
 
 @app.get("/api/v1/messages/", response_model=list[Message])
-def get_messages():
+async def get_messages():
     """Получение всех сообщений"""
     try:
         messages = list(db.messages.find())
@@ -55,7 +55,7 @@ def get_messages():
 
 
 @app.post("/api/v1/messages/", response_model=Message)
-def create_message(message: Message, request: Request):
+async def create_message(message: Message, request: Request):
     """Создание сообщения в БД"""
     try:
         message_dict = message.dict()
