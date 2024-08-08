@@ -15,17 +15,17 @@ class State_(StatesGroup):
 
 router = Router()
 
-# Приветствие
 @router.message(Command("start"))
 async def send_welcome(message: Message):
+    """Приветствие"""
     await message.reply("Welcome!\n"
                         "You can use /messages to view messages,\n"
                         "and /create to add a new message.")
 
 
-# Получение всех сообщений
 @router.message(Command("messages"))
 async def get_messages(message: Message):
+    """Получение всех сообщений"""
     response = requests.get(API_URL)
     if response:
         messages = response.json()
@@ -38,9 +38,9 @@ async def get_messages(message: Message):
         logging.error("No response from {}".format(API_URL))
 
 
-# Создание сообщения
 @router.message(Command("create"))
 async def create_message(message: Message, state: FSMContext):
+    """Создание сообщения"""
     await message.reply("Please enter your message")
     await state.set_state(State_.wait_for_message)
 
@@ -58,7 +58,7 @@ async def add(msg: Message, state: FSMContext):
         logging.error("No response from {}".format(API_URL))
 
 
-# Ответ на любое полученное сообщение от пользователя
 @router.message()
 async def any_msg(message: Message):
+    """Ответ на любое полученное сообщение от пользователя"""
     await send_welcome(message)

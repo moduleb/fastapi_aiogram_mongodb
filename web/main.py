@@ -12,8 +12,8 @@ is_running_in_docker = os.path.exists('/.dockerenv') or os.path.exists('/proc/1/
 # Создаем приложение FastAPI
 app = FastAPI()
 
-# Устанавливаем строку подключения к MongoDB и
-# уровень логирования в зависимости от окружения.
+"""Устанавливаем строку подключения к MongoDB и
+уровень логирования в зависимости от окружения"""
 if is_running_in_docker:
     mongo_connection_string = "mongodb://mongo:27017/"
     log_level = logging.INFO
@@ -27,6 +27,8 @@ logging.basicConfig(level=log_level)
 # Подключаемся к MongoDB
 client = MongoClient(mongo_connection_string, serverSelectionTimeoutMS=2000)
 db = client.messages  # Выбор базы данных "messages"
+
+
 # logging.info("MongoDB connected at {}: {}".format(client.HOST, client.PORT))
 
 # Модель данных
@@ -41,9 +43,9 @@ class Message(BaseModel):
         arbitrary_types_allowed = True
 
 
-# Получение всех сообщений
 @app.get("/api/v1/messages/", response_model=list[Message])
 def get_messages():
+    """Получение всех сообщений"""
     try:
         messages = list(db.messages.find())
         return messages
@@ -52,9 +54,9 @@ def get_messages():
         raise HTTPException(status_code=500, detail="Database error")
 
 
-# Создание сообщения в БД
 @app.post("/api/v1/messages/", response_model=Message)
 def create_message(message: Message, request: Request):
+    """Создание сообщения в БД"""
     try:
         message_dict = message.dict()
         message_dict["host"] = request.client.host
@@ -63,6 +65,7 @@ def create_message(message: Message, request: Request):
     except errors.PyMongoError as e:
         logging.error("Error inserting message: {}".format(e))
         raise HTTPException(status_code=500, detail="Database error")
+
 
 # Запуск приложения
 if __name__ == "__main__":
